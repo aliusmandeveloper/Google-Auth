@@ -1,0 +1,418 @@
+Auth/
+├─ auth-otp/
+│  ├─ backend/
+│  │  ├─ config/
+│  │  │  └─ db.js
+│  │  ├─ controllers/
+│  │  │  └─ authController.js
+│  │  ├─ models/
+│  │  │  └─ UserSignotp.js
+│  │  ├─ routes/
+│  │  │  └─ authRoutes.js
+│  │  ├─ utils/
+│  │  │  ├─ fileUpload.js
+│  │  │  └─ sendEmail.js
+│  │  ├─ .env
+│  │  ├─ package-lock.json
+│  │  ├─ package.json
+│  │  └─ server.js
+│  ├─ frontend/
+│  │  ├─ .next/
+│  │  │  ├─ build/
+│  │  │  │  └─ chunks/
+│  │  │  │     ├─ [root-of-the-server]__51225daf._.js
+│  │  │  │     ├─ [root-of-the-server]__51225daf._.js.map
+│  │  │  │     ├─ [root-of-the-server]__974941ed._.js
+│  │  │  │     ├─ [root-of-the-server]__974941ed._.js.map
+│  │  │  │     ├─ [turbopack-node]_transforms_postcss_ts_5260e9fa._.js
+│  │  │  │     ├─ [turbopack-node]_transforms_postcss_ts_5260e9fa._.js.map
+│  │  │  │     ├─ [turbopack]_runtime.js
+│  │  │  │     ├─ [turbopack]_runtime.js.map
+│  │  │  │     ├─ node_modules_fe693df6._.js
+│  │  │  │     └─ node_modules_fe693df6._.js.map
+│  │  │  ├─ cache/
+│  │  │  │  ├─ .rscinfo
+│  │  │  │  ├─ chrome-devtools-workspace-uuid
+│  │  │  │  └─ next-devtools-config.json
+│  │  │  ├─ server/
+│  │  │  │  ├─ app/
+│  │  │  │  │  ├─ _not-found/
+│  │  │  │  │  │  ├─ page/
+│  │  │  │  │  │  │  ├─ app-build-manifest.json
+│  │  │  │  │  │  │  ├─ app-paths-manifest.json
+│  │  │  │  │  │  │  ├─ build-manifest.json
+│  │  │  │  │  │  │  ├─ next-font-manifest.json
+│  │  │  │  │  │  │  ├─ react-loadable-manifest.json
+│  │  │  │  │  │  │  └─ server-reference-manifest.json
+│  │  │  │  │  │  ├─ page_client-reference-manifest.js
+│  │  │  │  │  │  ├─ page.js
+│  │  │  │  │  │  └─ page.js.map
+│  │  │  │  │  ├─ favicon.ico/
+│  │  │  │  │  │  ├─ route/
+│  │  │  │  │  │  │  ├─ app-build-manifest.json
+│  │  │  │  │  │  │  ├─ app-paths-manifest.json
+│  │  │  │  │  │  │  └─ build-manifest.json
+│  │  │  │  │  │  ├─ route.js
+│  │  │  │  │  │  └─ route.js.map
+│  │  │  │  │  ├─ login/
+│  │  │  │  │  │  ├─ page/
+│  │  │  │  │  │  │  ├─ app-build-manifest.json
+│  │  │  │  │  │  │  ├─ app-paths-manifest.json
+│  │  │  │  │  │  │  ├─ build-manifest.json
+│  │  │  │  │  │  │  ├─ next-font-manifest.json
+│  │  │  │  │  │  │  ├─ react-loadable-manifest.json
+│  │  │  │  │  │  │  └─ server-reference-manifest.json
+│  │  │  │  │  │  ├─ page_client-reference-manifest.js
+│  │  │  │  │  │  ├─ page.js
+│  │  │  │  │  │  └─ page.js.map
+│  │  │  │  │  ├─ page/
+│  │  │  │  │  │  ├─ app-build-manifest.json
+│  │  │  │  │  │  ├─ app-paths-manifest.json
+│  │  │  │  │  │  ├─ build-manifest.json
+│  │  │  │  │  │  ├─ next-font-manifest.json
+│  │  │  │  │  │  ├─ react-loadable-manifest.json
+│  │  │  │  │  │  └─ server-reference-manifest.json
+│  │  │  │  │  ├─ register/
+│  │  │  │  │  │  ├─ page/
+│  │  │  │  │  │  │  ├─ app-build-manifest.json
+│  │  │  │  │  │  │  ├─ app-paths-manifest.json
+│  │  │  │  │  │  │  ├─ build-manifest.json
+│  │  │  │  │  │  │  ├─ next-font-manifest.json
+│  │  │  │  │  │  │  ├─ react-loadable-manifest.json
+│  │  │  │  │  │  │  └─ server-reference-manifest.json
+│  │  │  │  │  │  ├─ page_client-reference-manifest.js
+│  │  │  │  │  │  ├─ page.js
+│  │  │  │  │  │  └─ page.js.map
+│  │  │  │  │  ├─ verify-success/
+│  │  │  │  │  │  ├─ page/
+│  │  │  │  │  │  │  ├─ app-build-manifest.json
+│  │  │  │  │  │  │  ├─ app-paths-manifest.json
+│  │  │  │  │  │  │  ├─ build-manifest.json
+│  │  │  │  │  │  │  ├─ next-font-manifest.json
+│  │  │  │  │  │  │  ├─ react-loadable-manifest.json
+│  │  │  │  │  │  │  └─ server-reference-manifest.json
+│  │  │  │  │  │  ├─ page_client-reference-manifest.js
+│  │  │  │  │  │  ├─ page.js
+│  │  │  │  │  │  └─ page.js.map
+│  │  │  │  │  ├─ page_client-reference-manifest.js
+│  │  │  │  │  ├─ page.js
+│  │  │  │  │  └─ page.js.map
+│  │  │  │  ├─ chunks/
+│  │  │  │  │  ├─ ssr/
+│  │  │  │  │  │  ├─ [root-of-the-server]__fec65fd4._.js.map
+│  │  │  │  │  │  ├─ [turbopack]_browser_dev_hmr-client_hmr-client_ts_818f0fdf._.js
+│  │  │  │  │  └─ node_modules_next_635ab235._.js.map
+│  │  │  │  ├─ pages/
+│  │  │  │  │  ├─ _app/
+│  │  │  │  │  │  ├─ build-manifest.json
+│  │  │  │  │  │  ├─ client-build-manifest.json
+│  │  │  │  │  │  ├─ next-font-manifest.json
+│  │  │  │  │  │  ├─ pages-manifest.json
+│  │  │  │  │  │  └─ react-loadable-manifest.json
+│  │  │  │  │  ├─ _document/
+│  │  │  │  │  │  ├─ next-font-manifest.json
+│  │  │  │  │  │  ├─ pages-manifest.json
+│  │  │  │  │  │  └─ react-loadable-manifest.json
+│  │  │  │  │  ├─ _error/
+│  │  │  │  │  │  ├─ build-manifest.json
+│  │  │  │  │  │  ├─ client-build-manifest.json
+│  │  │  │  │  │  ├─ next-font-manifest.json
+│  │  │  │  │  │  ├─ pages-manifest.json
+│  │  │  │  │  │  └─ react-loadable-manifest.json
+│  │  │  │  │  ├─ _app.js
+│  │  │  │  │  ├─ _app.js.map
+│  │  │  │  │  ├─ _document.js
+│  │  │  │  │  ├─ _document.js.map
+│  │  │  │  │  ├─ _error.js
+│  │  │  │  │  └─ _error.js.map
+│  │  │  │  ├─ app-paths-manifest.json
+│  │  │  │  ├─ interception-route-rewrite-manifest.js
+│  │  │  │  ├─ middleware-build-manifest.js
+│  │  │  │  ├─ middleware-manifest.json
+│  │  │  │  ├─ next-font-manifest.js
+│  │  │  │  ├─ next-font-manifest.json
+│  │  │  │  ├─ pages-manifest.json
+│  │  │  │  ├─ server-reference-manifest.js
+│  │  │  │  └─ server-reference-manifest.json
+│  │  │  ├─ static/
+│  │  │  │  ├─ chunks/
+│  │  │  │  │  ├─ pages/
+│  │  │  │  │  │  ├─ _app.js
+│  │  │  │  │  │  └─ _error.js
+│  │  │  │  │  ├─ _0841b4ac._.js
+│  │  │  │  ├─ development/
+│  │  │  │  │  ├─ _buildManifest.js
+│  │  │  │  │  ├─ _clientMiddlewareManifest.json
+│  │  │  │  │  └─ _ssgManifest.js
+│  │  │  │  └─ media/
+│  │  │  │     ├─ 4fa387ec64143e14-s.c1fdd6c2.woff2
+│  │  │  ├─ types/
+│  │  │  │  └─ routes.d.ts
+│  │  │  ├─ app-build-manifest.json
+│  │  │  ├─ build-manifest.json
+│  │  │  ├─ fallback-build-manifest.json
+│  │  │  ├─ package.json
+│  │  │  ├─ postcss.js
+│  │  │  ├─ postcss.js.map
+│  │  │  ├─ prerender-manifest.json
+│  │  │  ├─ routes-manifest.json
+│  │  │  └─ trace
+│  │  ├─ public/
+│  │  │  ├─ file.svg
+│  │  │  ├─ globe.svg
+│  │  │  ├─ next.svg
+│  │  │  ├─ vercel.svg
+│  │  │  └─ window.svg
+│  │  ├─ src/
+│  │  │  └─ app/
+│  │  │     ├─ components/
+│  │  │     │  ├─ AuthModal.jsx
+│  │  │     │  ├─ HeroSection.jsx
+│  │  │     │  └─ Navbar.jsx
+│  │  │     ├─ login/
+│  │  │     │  └─ page.jsx
+│  │  │     ├─ verify-success/
+│  │  │     │  └─ page.jsx
+│  │  │     ├─ favicon.ico
+│  │  │     ├─ globals.css
+│  │  │     ├─ layout.js
+│  │  │     └─ page.js
+│  │  ├─ .gitignore
+│  │  ├─ eslint.config.mjs
+│  │  ├─ jsconfig.json
+│  │  ├─ next.config.mjs
+│  │  ├─ package-lock.json
+│  │  ├─ package.json
+│  │  ├─ postcss.config.mjs
+│  │  └─ README.md
+│  ├─ .gitignore
+│  └─ read.me
+└─ auth-varification/
+   ├─ backend/
+   │  ├─ config/
+   │  │  └─ db.js
+   │  ├─ controllers/
+   │  │  └─ authController.js
+   │  ├─ models/
+   │  │  └─ usersign.js
+   │  ├─ routes/
+   │  │  └─ userauth.js
+   │  ├─ utils/
+   │  │  ├─ fileUpload.js
+   │  │  └─ sendEmail.js
+   │  ├─ .env
+   │  ├─ package-lock.json
+   │  ├─ package.json
+   │  └─ server.js
+   ├─ frontend/
+   │  ├─ .next/
+   │  │  ├─ build/
+   │  │  │  └─ chunks/
+   │  │  │     ├─ [root-of-the-server]__51225daf._.js
+   │  │  │     ├─ [root-of-the-server]__51225daf._.js.map
+   │  │  │     ├─ [root-of-the-server]__974941ed._.js
+   │  │  ├─ cache/
+   │  │  │  ├─ .rscinfo
+   │  │  │  ├─ chrome-devtools-workspace-uuid
+   │  │  │  └─ next-devtools-config.json
+   │  │  ├─ server/
+   │  │  │  ├─ app/
+   │  │  │  │  ├─ _not-found/
+   │  │  │  │  │  ├─ page/
+   │  │  │  │  │  │  ├─ app-build-manifest.json
+   │  │  │  │  │  │  ├─ app-paths-manifest.json
+   │  │  │  │  │  │  ├─ build-manifest.json
+   │  │  │  │  │  │  ├─ next-font-manifest.json
+   │  │  │  │  │  │  ├─ react-loadable-manifest.json
+   │  │  │  │  │  │  └─ server-reference-manifest.json
+   │  │  │  │  │  ├─ page_client-reference-manifest.js
+   │  │  │  │  │  ├─ page.js
+   │  │  │  │  │  └─ page.js.map
+   │  │  │  │  ├─ favicon.ico/
+   │  │  │  │  │  ├─ route/
+   │  │  │  │  │  │  ├─ app-build-manifest.json
+   │  │  │  │  │  │  ├─ app-paths-manifest.json
+   │  │  │  │  │  │  └─ build-manifest.json
+   │  │  │  │  │  ├─ route.js
+   │  │  │  │  │  └─ route.js.map
+   │  │  │  │  ├─ login/
+   │  │  │  │  │  ├─ page/
+   │  │  │  │  │  │  ├─ app-build-manifest.json
+   │  │  │  │  │  │  ├─ app-paths-manifest.json
+   │  │  │  │  │  │  ├─ build-manifest.json
+   │  │  │  │  │  │  ├─ next-font-manifest.json
+   │  │  │  │  │  │  ├─ react-loadable-manifest.json
+   │  │  │  │  │  │  └─ server-reference-manifest.json
+   │  │  │  │  │  ├─ page_client-reference-manifest.js
+   │  │  │  │  │  ├─ page.js
+   │  │  │  │  │  └─ page.js.map
+   │  │  │  │  ├─ page/
+   │  │  │  │  │  ├─ app-build-manifest.json
+   │  │  │  │  │  ├─ app-paths-manifest.json
+   │  │  │  │  │  ├─ build-manifest.json
+   │  │  │  │  │  ├─ next-font-manifest.json
+   │  │  │  │  │  ├─ react-loadable-manifest.json
+   │  │  │  │  │  └─ server-reference-manifest.json
+   │  │  │  │  ├─ register/
+   │  │  │  │  │  ├─ page/
+   │  │  │  │  │  │  ├─ app-build-manifest.json
+   │  │  │  │  │  │  ├─ app-paths-manifest.json
+   │  │  │  │  │  │  ├─ build-manifest.json
+   │  │  │  │  │  │  ├─ next-font-manifest.json
+   │  │  │  │  │  │  ├─ react-loadable-manifest.json
+   │  │  │  │  │  │  └─ server-reference-manifest.json
+   │  │  │  │  │  ├─ page_client-reference-manifest.js
+   │  │  │  │  │  ├─ page.js
+   │  │  │  │  │  └─ page.js.map
+   │  │  │  │  ├─ verify-success/
+   │  │  │  │  │  ├─ page/
+   │  │  │  │  │  │  ├─ app-build-manifest.json
+   │  │  │  │  │  │  ├─ app-paths-manifest.json
+   │  │  │  │  │  │  ├─ build-manifest.json
+   │  │  │  │  │  │  ├─ next-font-manifest.json
+   │  │  │  │  │  │  ├─ react-loadable-manifest.json
+   │  │  │  │  │  │  └─ server-reference-manifest.json
+   │  │  │  │  │  ├─ page_client-reference-manifest.js
+   │  │  │  │  │  ├─ page.js
+   │  │  │  │  │  └─ page.js.map
+   │  │  │  │  ├─ page_client-reference-manifest.js
+   │  │  │  │  ├─ page.js
+   │  │  │  │  └─ page.js.map
+   │  │  │  ├─ chunks/
+   │  │  │  │  ├─ ssr/
+   │  │  │  │  │  ├─ [externals]_next_dist_shared_lib_no-fallback-error_external_59b92b38.js
+   │  │  │  │  │  ├─ [externals]_next_dist_shared_lib_no-fallback-error_external_59b92b38.js.map
+   │  │  │  │  │  ├─ node_modules_next_navigation_34126abf.js.map
+   │  │  │  │  │  ├─ src_app_ca777385._.js
+   │  │  │  │  │  ├─ src_app_ca777385._.js.map
+   │  │  │  │  │  ├─ src_app_login_page_jsx_7fb8ab7f._.js
+   │  │  │  │  │  ├─ src_app_login_page_jsx_7fb8ab7f._.js.map
+   │  │  │  │  │  ├─ src_app_page_e6bfee3a.js
+   │  │  │  │  │  ├─ src_app_page_e6bfee3a.js.map
+   │  │  │  │  │  ├─ src_app_verify-success_page_jsx_6f50efc8._.js
+   │  │  │  │  │  └─ src_app_verify-success_page_jsx_6f50efc8._.js.map
+   │  │  │  │  ├─ [root-of-the-server]__f547b805._.js
+   │  │  │  │  ├─ [root-of-the-server]__f547b805._.js.map
+   │  │  │  │  ├─ [turbopack]_runtime.js
+   │  │  │  │  ├─ [turbopack]_runtime.js.map
+   │  │  │  │  ├─ node_modules_next_635ab235._.js
+   │  │  │  │  └─ node_modules_next_635ab235._.js.map
+   │  │  │  ├─ pages/
+   │  │  │  │  ├─ _app/
+   │  │  │  │  │  ├─ build-manifest.json
+   │  │  │  │  │  ├─ client-build-manifest.json
+   │  │  │  │  │  ├─ next-font-manifest.json
+   │  │  │  │  │  ├─ pages-manifest.json
+   │  │  │  │  │  └─ react-loadable-manifest.json
+   │  │  │  │  ├─ _document/
+   │  │  │  │  │  ├─ next-font-manifest.json
+   │  │  │  │  │  ├─ pages-manifest.json
+   │  │  │  │  │  └─ react-loadable-manifest.json
+   │  │  │  │  ├─ _error/
+   │  │  │  │  │  ├─ build-manifest.json
+   │  │  │  │  │  ├─ client-build-manifest.json
+   │  │  │  │  │  ├─ next-font-manifest.json
+   │  │  │  │  │  ├─ pages-manifest.json
+   │  │  │  │  │  └─ react-loadable-manifest.json
+   │  │  │  │  ├─ _app.js
+   │  │  │  │  ├─ _app.js.map
+   │  │  │  │  ├─ _document.js
+   │  │  │  │  ├─ _document.js.map
+   │  │  │  │  ├─ _error.js
+   │  │  │  │  └─ _error.js.map
+   │  │  │  ├─ app-paths-manifest.json
+   │  │  │  ├─ interception-route-rewrite-manifest.js
+   │  │  │  ├─ middleware-build-manifest.js
+   │  │  │  ├─ middleware-manifest.json
+   │  │  │  ├─ next-font-manifest.js
+   │  │  │  ├─ next-font-manifest.json
+   │  │  │  ├─ pages-manifest.json
+   │  │  │  ├─ server-reference-manifest.js
+   │  │  │  └─ server-reference-manifest.json
+   │  │  ├─ static/
+   │  │  │  ├─ chunks/
+   │  │  │  │  ├─ pages/
+   │  │  │  │  │  ├─ _app.js
+   │  │  │  │  │  └─ _error.js
+   │  │  │  │  ├─ _0841b4ac._.js
+   │  │  │  │  ├─ _0841b4ac._.js.map
+   │  │  │  │  ├─ _0e1e09ba._.js
+   │  │  │  │  ├─ _0e1e09ba._.js.map
+   │  │  │  │  ├─ _396805a1._.js
+   │  │  │  │  ├─ _396805a1._.js.map
+   │  │  │  │  ├─ _4d59470f._.js
+   │  │  │  │  ├─ _4d59470f._.js.map
+   │  │  │  │  ├─ _707d6396._.js
+   │  │  │  │  ├─ _707d6396._.js.map
+   │  │  │  │  ├─ _8cd3c267._.js
+   │  │  │  │  ├─ _8cd3c267._.js.map
+   │  │  │  │  ├─ _a0ff3932._.js
+   │  │  │  │  ├─ _cdba956c._.js.map
+   │  │  │  │  ├─ _e43ff218._.js
+   │  │  │  │  ├─ _e43ff218._.js.map
+   │  │  │  │  ├─ _f7131292._.js
+   │  │  │  │  ├─ _f7131292._.js.map
+   │  │  │  │  ├─ [next]_entry_page-loader_ts_43b523b5._.js
+   │  │  │  │  ├─ [next]_entry_page-loader_ts_43b523b5._.js.map
+   │  │  │  │  ├─ [next]_entry_page-loader_ts_742e4b53._.success_page_jsx_540016f9
+   │  │  │  │  ├─ node_modules_@swc_helpers_cjs_b3dc30d6._.js
+   │  │  │  │  ├─ node_modules_react-dom_4411d9bd._.js.map
+   │  │  │  │  ├─ pages__app_2da965e7._.js
+   │  │  │  │  ├─ pages__app_63a81fd1._.js.map
+   │  │  │  │  ├─ pages__error_18aa0e75._.js.map
+   │  │  │  │  ├─ pages__error_2da965e7._.js
+   │  │  │  │  ├─ src_app_aefd51b0._.js
+   │  │  │  │  ├─ src_app_aefd51b0._.js.map
+   │  │  │  │  ├─ src_app_components_926cac3c._.js
+   │  │  │  │  ├─ src_app_components_926cac3c._.js.map
+   │  │  │  │  ├─ turbopack-_cdba956c._.js
+   │  │  │  │  ├─ turbopack-pages__app_63a81fd1._.js
+   │  │  │  │  └─ turbopack-pages__error_18aa0e75._.js
+   │  │  │  ├─ development/
+   │  │  │  │  ├─ _buildManifest.js
+   │  │  │  │  ├─ _clientMiddlewareManifest.json
+   │  │  │  │  └─ _ssgManifest.js
+   │  │  │  └─ media/
+   │  │  │     ├─ 4fa387ec64143e14-s.c1fdd6c2.woff2
+   │  │  │     ├─ 7178b3e590c64307-s.b97b3418.woff2
+   │  │  ├─ types/
+   │  │  │  └─ routes.d.ts
+   │  │  ├─ app-build-manifest.json
+   │  │  ├─ build-manifest.json
+   │  │  ├─ fallback-build-manifest.json
+   │  │  ├─ package.json
+   │  │  ├─ postcss.js
+   │  │  ├─ postcss.js.map
+   │  │  ├─ prerender-manifest.json
+   │  │  ├─ routes-manifest.json
+   │  │  └─ trace
+   │  ├─ public/
+   │  │  ├─ file.svg
+   │  │  ├─ globe.svg
+   │  │  ├─ next.svg
+   │  │  ├─ vercel.svg
+   │  │  └─ window.svg
+   │  ├─ src/
+   │  │  └─ app/
+   │  │     ├─ components/
+   │  │     │  ├─ AuthModal.jsx
+   │  │     │  ├─ HeroSection.jsx
+   │  │     │  └─ Navbar.jsx
+   │  │     ├─ login/
+   │  │     │  └─ page.jsx
+   │  │     ├─ verify-success/
+   │  │     │  └─ page.jsx
+   │  │     ├─ favicon.ico
+   │  │     ├─ globals.css
+   │  │     ├─ layout.js
+   │  │     └─ page.js
+   │  ├─ .gitignore
+   │  ├─ eslint.config.mjs
+   │  ├─ jsconfig.json
+   │  ├─ next.config.mjs
+   │  ├─ package-lock.json
+   │  ├─ package.json
+   │  ├─ postcss.config.mjs
+   │  └─ README.md
+   ├─ .gitignore
+   └─ read.me
