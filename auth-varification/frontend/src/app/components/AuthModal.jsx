@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { useSearchParams } from "next/navigation";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function AuthModal({ onClose, onLoginSuccess }) {
   const [view, setView] = useState("choice"); // choice | login | signup
@@ -173,6 +174,29 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
     }
   };
 
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/google-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: credentialResponse.credential }),
+      });
+      const result = await res.json();
+
+      if (result.status === "success") {
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("user", JSON.stringify(result.data.user));
+        onLoginSuccess?.(result.data.user, result.token);
+        window.location.href = "/";
+      } else {
+        setError(result.message || "Google Login failed");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Could not connect to server");
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl w-full max-w-sm p-6 relative shadow-lg">
@@ -195,14 +219,16 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
             </p>
 
             {/* Google */}
-            <button className="w-full border border-gray-300 hover:bg-gray-50 text-gray-900 py-2 rounded mb-3 flex items-center justify-center gap-2">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
-                alt="Google"
-                className="w-5 h-5"
+            {/* Google */}
+            <div className="w-full flex justify-center mb-3">
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={() => {
+                  console.log("Login Failed");
+                  setError("Google Login Failed");
+                }}
               />
-              Continue with Google
-            </button>
+            </div>
 
             {/* Divider */}
             <div className="flex items-center mb-6">

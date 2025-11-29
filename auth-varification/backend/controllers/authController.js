@@ -3,6 +3,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/usersign");
 const sendEmail = require("../utils/sendEmail");
+const { OAuth2Client } = require("google-auth-library");
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -210,3 +213,50 @@ exports.resetPassword = async (req, res) => {
 
 
 
+
+// ✅ Google Login
+exports.googleLogin = async (req, res) => {
+  try {
+    const { token } = req.body;
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const { name, email, picture } = ticket.getPayload();
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      // Create new user if not exists
+      // Generate a random password for google users
+      const randomPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+
+      user = await User.create({
+        name,
+        email,
+        password: randomPassword,
+        isVerified: true, // Google emails are already verified
+      });
+    }
+
+    const jwtToken = generateToken(user._id);
+
+    res.json({
+      status: "success",
+      message: "Google login successful",
+      token: jwtToken,
+      data: {
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          picture,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Google Login Error:", error);
+    res.status(400).json({ status: "fail", message: "Google login failed" });
+  }
+};

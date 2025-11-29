@@ -5,7 +5,8 @@ const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String }, // Made optional for Google Login
+    googleId: { type: String }, // Added for Google Login
     isVerified: { type: Boolean, default: false }, // email verification ke liye
   },
   { timestamps: true }
