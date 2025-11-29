@@ -6,6 +6,7 @@ const {
   googleLogin,
   forgotPassword,
   resetPassword,
+  githubLogin,
 } = require("../controllers/authController");
 
 const router = express.Router();
@@ -17,6 +18,7 @@ router.post("/google-login", googleLogin);
 router.get("/verify-email", verifyEmail);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
+router.post("/github-login", githubLogin);
 
 module.exports = router;
 

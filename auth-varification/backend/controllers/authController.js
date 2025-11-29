@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/usersign");
 const sendEmail = require("../utils/sendEmail");
 const { OAuth2Client } = require("google-auth-library");
+const axios = require("axios");
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -258,5 +259,88 @@ exports.googleLogin = async (req, res) => {
   } catch (error) {
     console.error("Google Login Error:", error);
     res.status(400).json({ status: "fail", message: "Google login failed" });
+  }
+};
+
+// ✅ GitHub Login
+exports.githubLogin = async (req, res) => {
+  try {
+    const { code } = req.body;
+
+    if (!code) {
+      return res.status(400).json({ status: "fail", message: "Authorization code is required" });
+    }
+
+    // 1. Exchange code for access token
+    const tokenResponse = await axios.post(
+      "https://github.com/login/oauth/access_token",
+      {
+        client_id: process.env.GITHUB_CLIENT_ID,
+        client_secret: process.env.GITHUB_CLIENT_SECRET,
+        code,
+      },
+      {
+        headers: { Accept: "application/json" },
+      }
+    );
+
+    const { access_token, error } = tokenResponse.data;
+
+    if (error || !access_token) {
+      return res.status(400).json({ status: "fail", message: "GitHub authentication failed" });
+    }
+
+    // 2. Get user data
+    const userResponse = await axios.get("https://api.github.com/user", {
+      headers: { Authorization: `Bearer ${access_token}` },
+    });
+
+    const userData = userResponse.data;
+    let email = userData.email;
+
+    // 3. If email is private, fetch it separately
+    if (!email) {
+      const emailsResponse = await axios.get("https://api.github.com/user/emails", {
+        headers: { Authorization: `Bearer ${access_token}` },
+      });
+      const primaryEmail = emailsResponse.data.find((e) => e.primary && e.verified);
+      email = primaryEmail ? primaryEmail.email : null;
+    }
+
+    if (!email) {
+      return res.status(400).json({ status: "fail", message: "GitHub email not found or not verified" });
+    }
+
+    // 4. Find or create user
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      const randomPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+      user = await User.create({
+        name: userData.name || userData.login,
+        email,
+        password: randomPassword,
+        isVerified: true,
+        googleId: userData.id.toString(), // Using googleId field for now or we can add githubId
+      });
+    }
+
+    const token = generateToken(user._id);
+
+    res.json({
+      status: "success",
+      message: "GitHub login successful",
+      token,
+      data: {
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("GitHub Login Error:", error.response?.data || error.message);
+    res.status(500).json({ status: "error", message: "Server error during GitHub login" });
   }
 };
