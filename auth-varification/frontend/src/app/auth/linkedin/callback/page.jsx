@@ -51,6 +51,7 @@ export default function LinkedInCallback() {
               icon: "error",
               title: "Login Failed",
               text: data.message || "LinkedIn authentication failed",
+              footer: data.details ? `<pre>${JSON.stringify(data.details, null, 2)}</pre>` : null,
             }).then(() => {
               router.push("/");
             });

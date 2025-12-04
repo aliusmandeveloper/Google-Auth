@@ -259,11 +259,11 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
             <button
               onClick={() => {
                 const clientId = process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID;
-                const redirectUri = process.env.NEXT_PUBLIC_LINKEDIN_REDIRECT_URI;
-                console.log("LinkedIn Redirect URI:", redirectUri);
-                alert(`Debug: Redirect URI is '${redirectUri}'`);
+                const redirectUri = process.env.NEXT_PUBLIC_LINKEDIN_REDIRECT_URI || "http://localhost:3000/auth/linkedin/callback";
                 const scope = "openid profile email";
-                window.location.href = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
+                const authUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
+                console.log("LinkedIn Auth URL:", authUrl);
+                window.location.href = authUrl;
               }}
               className="w-full bg-[#0077b5] hover:bg-[#005582] text-white font-semibold py-2 rounded mb-3 flex items-center justify-center gap-2"
             >

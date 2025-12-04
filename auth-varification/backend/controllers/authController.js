@@ -350,6 +350,11 @@ exports.linkedinLogin = async (req, res) => {
   try {
     const { code } = req.body;
 
+    console.log("LinkedIn Login Attempt");
+    console.log("LINKEDIN_CLIENT_ID:", process.env.LINKEDIN_CLIENT_ID);
+    console.log("LINKEDIN_REDIRECT_URI:", process.env.LINKEDIN_REDIRECT_URI);
+    console.log("Code:", code);
+
     if (!code) {
       return res.status(400).json({ status: "fail", message: "Authorization code is required" });
     }
@@ -419,7 +424,11 @@ exports.linkedinLogin = async (req, res) => {
     });
   } catch (error) {
     console.error("LinkedIn Login Error:", error.response?.data || error.message);
-    res.status(500).json({ status: "error", message: "Server error during LinkedIn login" });
+    res.status(500).json({
+      status: "error",
+      message: "Server error during LinkedIn login",
+      details: error.response?.data || error.message
+    });
   }
 };
 
