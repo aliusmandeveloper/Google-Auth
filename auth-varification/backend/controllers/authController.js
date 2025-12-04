@@ -344,3 +344,160 @@ exports.githubLogin = async (req, res) => {
     res.status(500).json({ status: "error", message: "Server error during GitHub login" });
   }
 };
+
+// ✅ LinkedIn Login
+exports.linkedinLogin = async (req, res) => {
+  try {
+    const { code } = req.body;
+
+    if (!code) {
+      return res.status(400).json({ status: "fail", message: "Authorization code is required" });
+    }
+
+    // 1. Exchange code for access token
+    const params = new URLSearchParams();
+    params.append("grant_type", "authorization_code");
+    params.append("code", code);
+    console.log("Backend LinkedIn Redirect URI:", process.env.LINKEDIN_REDIRECT_URI);
+    params.append("redirect_uri", process.env.LINKEDIN_REDIRECT_URI);
+    params.append("client_id", process.env.LINKEDIN_CLIENT_ID);
+    params.append("client_secret", process.env.LINKEDIN_CLIENT_SECRET);
+
+    const tokenResponse = await axios.post(
+      "https://www.linkedin.com/oauth/v2/accessToken",
+      params,
+      {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      }
+    );
+
+    const { access_token } = tokenResponse.data;
+
+    if (!access_token) {
+      return res.status(400).json({ status: "fail", message: "LinkedIn authentication failed" });
+    }
+
+    // 2. Get user profile
+    const profileResponse = await axios.get("https://api.linkedin.com/v2/userinfo", {
+      headers: { Authorization: `Bearer ${access_token}` },
+    });
+
+    const userData = profileResponse.data;
+    const email = userData.email;
+
+    if (!email) {
+      return res.status(400).json({ status: "fail", message: "LinkedIn email not found" });
+    }
+
+    // 3. Find or create user
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      const randomPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+      user = await User.create({
+        name: userData.name || `${userData.given_name} ${userData.family_name}`,
+        email,
+        password: randomPassword,
+        isVerified: true,
+        linkedinId: userData.sub, // 'sub' is the unique identifier in OpenID Connect
+      });
+    }
+
+    const token = generateToken(user._id);
+
+    res.json({
+      status: "success",
+      message: "LinkedIn login successful",
+      token,
+      data: {
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("LinkedIn Login Error:", error.response?.data || error.message);
+    res.status(500).json({ status: "error", message: "Server error during LinkedIn login" });
+  }
+};
+
+// ✅ Facebook Login
+exports.facebookLogin = async (req, res) => {
+  try {
+    const { code } = req.body;
+
+    console.log("Facebook Login Attempt");
+    console.log("FACEBOOK_APP_ID:", process.env.FACEBOOK_APP_ID ? "Set" : "Missing");
+    console.log("FACEBOOK_APP_SECRET:", process.env.FACEBOOK_APP_SECRET ? "Set" : "Missing");
+    console.log("FACEBOOK_REDIRECT_URI:", process.env.FACEBOOK_REDIRECT_URI);
+
+    if (!code) {
+      return res.status(400).json({ status: "fail", message: "Authorization code is required" });
+    }
+
+    // 1. Exchange code for access token
+    const tokenResponse = await axios.get("https://graph.facebook.com/v18.0/oauth/access_token", {
+      params: {
+        client_id: process.env.FACEBOOK_APP_ID,
+        client_secret: process.env.FACEBOOK_APP_SECRET,
+        redirect_uri: process.env.FACEBOOK_REDIRECT_URI,
+        code,
+      },
+    });
+
+    const { access_token } = tokenResponse.data;
+
+    if (!access_token) {
+      return res.status(400).json({ status: "fail", message: "Facebook authentication failed" });
+    }
+
+    // 2. Get user profile
+    const profileResponse = await axios.get("https://graph.facebook.com/me", {
+      params: {
+        fields: "id,name,email,picture",
+        access_token,
+      },
+    });
+
+    const userData = profileResponse.data;
+    const email = userData.email;
+
+    if (!email) {
+      return res.status(400).json({ status: "fail", message: "Facebook email not found" });
+    }
+
+    // 3. Find or create user
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      const randomPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+      user = await User.create({
+        name: userData.name,
+        email,
+        password: randomPassword,
+        isVerified: true,
+        facebookId: userData.id,
+      });
+    }
+
+    const token = generateToken(user._id);
+
+    res.json({
+      status: "success",
+      message: "Facebook login successful",
+      token,
+      data: {
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Facebook Login Error:", error.response?.data || error.message);
+    res.status(500).json({ status: "error", message: "Server error during Facebook login" });
+  }
+};

@@ -7,6 +7,8 @@ const {
   forgotPassword,
   resetPassword,
   githubLogin,
+  linkedinLogin,
+  facebookLogin,
 } = require("../controllers/authController");
 
 const router = express.Router();
@@ -19,6 +21,8 @@ router.get("/verify-email", verifyEmail);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
 router.post("/github-login", githubLogin);
+router.post("/linkedin-login", linkedinLogin);
+router.post("/facebook-login", facebookLogin);
 
 module.exports = router;
 
