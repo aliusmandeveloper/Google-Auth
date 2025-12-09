@@ -51,8 +51,8 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
     try {
       const url =
         view === "signup"
-          ? "http://localhost:5000/api/auth/register"
-          : "http://localhost:5000/api/auth/login";
+          ? "https://google-auth-backend-six.vercel.app/api/auth/register"
+          : "https://google-auth-backend-six.vercel.app/api/auth/login";
 
       const body =
         view === "signup"
@@ -103,7 +103,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
 
     try {
       const res = await fetch(
-        "http://localhost:5000/api/auth/forgot-password",
+        "https://google-auth-backend-six.vercel.app/api/auth/forgot-password",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -148,7 +148,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/reset-password", {
+      const res = await fetch("https://google-auth-backend-six.vercel.app/api/auth/reset-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: resetToken, password: data.password }),
@@ -176,7 +176,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
 
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      const res = await fetch("http://localhost:5000/api/auth/google-login", {
+      const res = await fetch("https://google-auth-backend-six.vercel.app/api/auth/google-login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: credentialResponse.credential }),
