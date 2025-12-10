@@ -1,25 +1,18 @@
-# Deployment Fix Instructions
+# FINAL DEPLOYMENT INSTRUCTIONS
 
-To resolve the "Vulnerable version of Next.js detected" error and deploy successfully to Vercel, follow these steps:
+The error persists because Vercel might not have picked up the lockfile changes, or the previous push didn't go through as expected.
 
-1.  **I have updated your dependencies**:
-    *   `next` is updated to `16.0.8` (Latest version).
-    *   `react` and `react-dom` are updated to `^19.2.1`.
-    *   `package-lock.json` has been entirely regenerated to ensure it is clean and vulnerability-free.
+I have bumped the version in `package.json` to `0.1.1`. This forces a "Change" that git will definitely see.
 
-2.  **Verify Locally**:
-    *   I have already verified that `npm run build` works correctly.
+**Please run these exact commands:**
 
-3.  **Commit Changes (CRITICAL)**:
-    *   You **MUST** commit and push both `package.json` **AND** `package-lock.json` to your Git repository.
-    *   Vercel relies on `package-lock.json` to install the exact same versions we just tested. If you don't push the new lockfile, Vercel might use an old one and install the old, vulnerable Next.js version.
+```powershell
+cd frontend
+git add package.json package-lock.json
+git commit -m "Bump version to 0.1.1 and force update lockfile"
+git push origin main
+```
 
-    ```bash
-    git add frontend/package.json frontend/package-lock.json
-    git commit -m "Update Next.js to 16.0.8 to fix vulnerability"
-    git push origin main
-    ```
-
-4.  **Redeploy**:
-    *   Once you push, Vercel should automatically trigger a new deployment.
-    *   This deployment will use the secure version and the error should disappear.
+**Verification:**
+After pushing, go to your Vercel dashboard. You should see a new deployment building with the message "Bump version to 0.1.1...".
+If this build still fails with the SAME error, then checking the "Source" tab in Vercel to see the contents of `package.json` would be the next step (it should show "version": "0.1.1" and "next": "16.0.8").
