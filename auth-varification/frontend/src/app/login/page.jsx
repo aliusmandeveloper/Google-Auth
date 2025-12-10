@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import AuthModal from "../components/AuthModal";
 
 export default function LoginPage() {
@@ -15,6 +15,7 @@ export default function LoginPage() {
 
   return (
     <>
+    <Suspense fallback={<div>Loading...</div>}>
       {showModal && (
         <AuthModal
           onClose={() => setShowModal(false)}
@@ -23,6 +24,7 @@ export default function LoginPage() {
           }}
         />
       )}
+    </Suspense>
     </>
   );
 }

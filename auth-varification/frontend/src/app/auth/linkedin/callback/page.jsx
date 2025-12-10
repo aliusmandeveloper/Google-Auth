@@ -1,9 +1,27 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
 export default function LinkedInCallback() {
+  return (
+    <Suspense fallback={
+        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+          <div className="bg-white p-8 rounded-lg shadow-md text-center">
+            <h2 className="text-2xl font-bold mb-4">Authenticating...</h2>
+            <p className="text-gray-600">Please wait while we log you in with LinkedIn.</p>
+            <div className="mt-6 flex justify-center">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#0077b5]"></div>
+            </div>
+          </div>
+        </div>
+    }>
+      <LinkedInCallbackContent />
+    </Suspense>
+  );
+}
+
+function LinkedInCallbackContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [processing, setProcessing] = useState(true);
