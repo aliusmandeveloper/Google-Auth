@@ -264,7 +264,9 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
             {/* LinkedIn */}
             <button
               onClick={() => {
-                const clientId = process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID;
+                const clientId =
+                  process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID ||
+                  "86d1votzfoahae";
                 const redirectUri = `${window.location.origin}/auth/linkedin/callback`;
                 const scope = "openid profile email";
                 const authUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
@@ -288,7 +290,8 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
             {/* Facebook */}
             <button
               onClick={() => {
-                const clientId = process.env.NEXT_PUBLIC_FACEBOOK_APP_ID;
+                const clientId =
+                  process.env.NEXT_PUBLIC_FACEBOOK_APP_ID || "2334709953633039";
                 const redirectUri = `${window.location.origin}/auth/facebook/callback`;
                 const state = "facebook_auth"; // Optional but recommended
                 console.log("FB Debug - ClientID:", clientId);
