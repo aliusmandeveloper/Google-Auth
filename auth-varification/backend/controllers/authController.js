@@ -348,11 +348,11 @@ exports.githubLogin = async (req, res) => {
 // ✅ LinkedIn Login
 exports.linkedinLogin = async (req, res) => {
   try {
-    const { code } = req.body;
+    const { code, redirectUri } = req.body;
 
     console.log("LinkedIn Login Attempt");
     console.log("LINKEDIN_CLIENT_ID:", process.env.LINKEDIN_CLIENT_ID);
-    console.log("LINKEDIN_REDIRECT_URI:", process.env.LINKEDIN_REDIRECT_URI);
+    console.log("Received Redirect URI:", redirectUri);
     console.log("Code:", code);
 
     if (!code) {
@@ -363,8 +363,7 @@ exports.linkedinLogin = async (req, res) => {
     const params = new URLSearchParams();
     params.append("grant_type", "authorization_code");
     params.append("code", code);
-    console.log("Backend LinkedIn Redirect URI:", process.env.LINKEDIN_REDIRECT_URI);
-    params.append("redirect_uri", process.env.LINKEDIN_REDIRECT_URI);
+    params.append("redirect_uri", redirectUri || process.env.LINKEDIN_REDIRECT_URI);
     params.append("client_id", process.env.LINKEDIN_CLIENT_ID);
     params.append("client_secret", process.env.LINKEDIN_CLIENT_SECRET);
 
@@ -435,12 +434,12 @@ exports.linkedinLogin = async (req, res) => {
 // ✅ Facebook Login
 exports.facebookLogin = async (req, res) => {
   try {
-    const { code } = req.body;
+    const { code, redirectUri } = req.body;
 
     console.log("Facebook Login Attempt");
     console.log("FACEBOOK_APP_ID:", process.env.FACEBOOK_APP_ID ? "Set" : "Missing");
     console.log("FACEBOOK_APP_SECRET:", process.env.FACEBOOK_APP_SECRET ? "Set" : "Missing");
-    console.log("FACEBOOK_REDIRECT_URI:", process.env.FACEBOOK_REDIRECT_URI);
+    console.log("Received Redirect URI:", redirectUri);
 
     if (!code) {
       return res.status(400).json({ status: "fail", message: "Authorization code is required" });
@@ -451,7 +450,7 @@ exports.facebookLogin = async (req, res) => {
       params: {
         client_id: process.env.FACEBOOK_APP_ID,
         client_secret: process.env.FACEBOOK_APP_SECRET,
-        redirect_uri: process.env.FACEBOOK_REDIRECT_URI,
+        redirect_uri: redirectUri || process.env.FACEBOOK_REDIRECT_URI, // Use frontend provided URI, fallback to env
         code,
       },
     });
