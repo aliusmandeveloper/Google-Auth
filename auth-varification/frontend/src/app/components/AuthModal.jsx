@@ -265,9 +265,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
             <button
               onClick={() => {
                 const clientId = process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID;
-                const redirectUri =
-                  process.env.NEXT_PUBLIC_LINKEDIN_REDIRECT_URI ||
-                  "http://localhost:3000/auth/linkedin/callback";
+                const redirectUri = `${window.location.origin}/auth/linkedin/callback`;
                 const scope = "openid profile email";
                 const authUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
                 console.log("LinkedIn Auth URL:", authUrl);
