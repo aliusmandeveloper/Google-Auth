@@ -5,17 +5,21 @@ import Swal from "sweetalert2";
 
 export default function LinkedInCallback() {
   return (
-    <Suspense fallback={
+    <Suspense
+      fallback={
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
           <div className="bg-white p-8 rounded-lg shadow-md text-center">
             <h2 className="text-2xl font-bold mb-4">Authenticating...</h2>
-            <p className="text-gray-600">Please wait while we log you in with LinkedIn.</p>
+            <p className="text-gray-600">
+              Please wait while we log you in with LinkedIn.
+            </p>
             <div className="mt-6 flex justify-center">
               <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#0077b5]"></div>
             </div>
           </div>
         </div>
-    }>
+      }
+    >
       <LinkedInCallbackContent />
     </Suspense>
   );
@@ -45,11 +49,19 @@ function LinkedInCallbackContent() {
 
     if (code) {
       // Send code to backend
-      fetch("http://localhost:5000/api/auth/linkedin-login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code }),
-      })
+      fetch(
+        `${
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+        }/api/auth/linkedin-login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            code,
+            redirectUri: window.location.origin + "/auth/linkedin/callback",
+          }),
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           if (data.status === "success") {
@@ -69,7 +81,9 @@ function LinkedInCallbackContent() {
               icon: "error",
               title: "Login Failed",
               text: data.message || "LinkedIn authentication failed",
-              footer: data.details ? `<pre>${JSON.stringify(data.details, null, 2)}</pre>` : null,
+              footer: data.details
+                ? `<pre>${JSON.stringify(data.details, null, 2)}</pre>`
+                : null,
             }).then(() => {
               router.push("/");
             });
@@ -98,7 +112,9 @@ function LinkedInCallbackContent() {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md text-center">
         <h2 className="text-2xl font-bold mb-4">Authenticating...</h2>
-        <p className="text-gray-600">Please wait while we log you in with LinkedIn.</p>
+        <p className="text-gray-600">
+          Please wait while we log you in with LinkedIn.
+        </p>
         <div className="mt-6 flex justify-center">
           <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#0077b5]"></div>
         </div>
