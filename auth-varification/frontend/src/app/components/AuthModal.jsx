@@ -51,8 +51,8 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
     try {
       const url =
         view === "signup"
-          ? "https://google-auth-backend-six.vercel.app/api/auth/register"
-          : "https://google-auth-backend-six.vercel.app/api/auth/login";
+          ? `${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`
+          : `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`;
 
       const body =
         view === "signup"
@@ -103,7 +103,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
 
     try {
       const res = await fetch(
-        "https://google-auth-backend-six.vercel.app/api/auth/forgot-password",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/forgot-password`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -148,11 +148,14 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
     }
 
     try {
-      const res = await fetch("https://google-auth-backend-six.vercel.app/api/auth/reset-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: resetToken, password: data.password }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/reset-password`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: resetToken, password: data.password }),
+        }
+      );
       const result = await res.json();
 
       if (result.status === "success") {
@@ -176,11 +179,14 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
 
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      const res = await fetch("https://google-auth-backend-six.vercel.app/api/auth/google-login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: credentialResponse.credential }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google-login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: credentialResponse.credential }),
+        }
+      );
       const result = await res.json();
 
       if (result.status === "success") {
@@ -234,7 +240,7 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
             <button
               onClick={() => {
                 const clientId = "Ov23li6lttrnIRhnfotT"; // Will be replaced or fetched from env
-                const redirectUri = "http://localhost:3000/auth/github/callback";
+                const redirectUri = `${window.location.origin}/auth/github/callback`;
                 window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user:email`;
               }}
               className="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold py-2 rounded mb-3 flex items-center justify-center gap-2"
@@ -259,7 +265,9 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
             <button
               onClick={() => {
                 const clientId = process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID;
-                const redirectUri = process.env.NEXT_PUBLIC_LINKEDIN_REDIRECT_URI || "http://localhost:3000/auth/linkedin/callback";
+                const redirectUri =
+                  process.env.NEXT_PUBLIC_LINKEDIN_REDIRECT_URI ||
+                  "http://localhost:3000/auth/linkedin/callback";
                 const scope = "openid profile email";
                 const authUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
                 console.log("LinkedIn Auth URL:", authUrl);
@@ -283,7 +291,8 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
             <button
               onClick={() => {
                 const clientId = process.env.NEXT_PUBLIC_FACEBOOK_APP_ID;
-                const redirectUri = process.env.NEXT_PUBLIC_FACEBOOK_REDIRECT_URI;
+                const redirectUri =
+                  process.env.NEXT_PUBLIC_FACEBOOK_REDIRECT_URI;
                 const state = "facebook_auth"; // Optional but recommended
                 window.location.href = `https://www.facebook.com/v18.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}&scope=email`;
               }}
