@@ -289,9 +289,12 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
             <button
               onClick={() => {
                 const clientId = process.env.NEXT_PUBLIC_FACEBOOK_APP_ID;
-                const redirectUri =
-                  process.env.NEXT_PUBLIC_FACEBOOK_REDIRECT_URI;
+                const redirectUri = `${window.location.origin}/auth/facebook/callback`;
                 const state = "facebook_auth"; // Optional but recommended
+                console.log("FB Debug - ClientID:", clientId);
+                console.log("FB Debug - RedirectURI:", redirectUri);
+                if (!clientId)
+                  alert("Missing Facebook Client ID! Restart server?");
                 window.location.href = `https://www.facebook.com/v18.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}&scope=email`;
               }}
               className="w-full bg-[#1877F2] hover:bg-[#166fe5] text-white font-semibold py-2 rounded mb-3 flex items-center justify-center gap-2"
